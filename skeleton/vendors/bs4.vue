@@ -3,6 +3,9 @@
 * Various Bootstrap 4 fixes
 */
 app.ready.then(()=> {
+	console.log('Disabled...');
+	return;
+
 	// When a modal gets shown check if there are any input[autofocus] elements we need to focus
 	// If nothing is marked with [autofocus] the first (sane) input element is used instead
 	// Additionally if we find the 'data-autofocus-method' attribute this indicates how we should handle focusing (values are 'focus' (default) and 'select')

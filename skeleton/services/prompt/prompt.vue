@@ -114,7 +114,7 @@ module.exports = function() {
 					keyboard: settings.keyboard,
 					show: true,
 					backdrop: settings.backdrop,
-				})
+				});
 		});
 
 		return settings.defer.promise;
@@ -352,7 +352,7 @@ module.exports = {
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title">Modal header</h4>
-						<a class="close" data-dismiss="modal"><i class="fa fa-times"></i></a>
+						<a class="close" data-dismiss="modal"><i class="far fa-times"></i></a>
 					</div>
 					<div class="modal-body">
 						<p>Modal Body</p>

@@ -68,7 +68,7 @@ module.exports = {
 		},
 	},
 	methods: {
-		change(value) {
+		changeHandler(value) {
 			this.$emit('change', value.map(v => v.id ? {user: v.id} : {email: v.label}));
 			this.$emit('change-emails', value.map(v => v.email || v.label));
 		},
@@ -99,7 +99,7 @@ module.exports = {
 			multiple
 			taggable
 			select-on-tab
-			@input="change"
+			@input="changeHandler"
 			@search:focus="lazyRefresh()"
 		>
 			<template slot="option" slot-scope="option">
@@ -107,7 +107,7 @@ module.exports = {
 				{{option.label}}
 			</template>
 			<template slot="selected-option" slot-scope="option">
-				<i :class="option.loading ? 'fa fa-spinner fa-spin' : 'fas fa-user m-r-5'"/>
+				<i :class="option.loading ? 'far fa-spinner fa-spin' : 'fas fa-user m-r-5'"/>
 				<span v-if="!option.loading">{{option.label}}</span>
 			</template>
 		</v-select>

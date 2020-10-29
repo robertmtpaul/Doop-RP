@@ -18,6 +18,16 @@ module.exports = function() {
 			icon: 'fal fa-home',
 		},
 		{
+			title: 'History',
+			href: '/history',
+			icon: 'fal fa-fw fa-folder',
+		},
+		{
+			title: 'Reports',
+			href: '/reports',
+			icon: 'fal fa-fw fa-file-alt',
+		},
+		{
 			title: 'Companies',
 			href: '/companies',
 			icon: 'fal fa-building',
@@ -35,6 +45,7 @@ module.exports = function() {
 			icon: 'fal fa-cog',
 			show: ()=> Vue.services().$session.hasPermission('debug'),
 			children: [
+				{title: 'Agents', href: '/debug/agents'},
 				{title: 'Config', href: '/debug/config'},
 				{title: 'DirtyChecker', href: '/debug/dirtyChecker'},
 				{title: 'Drag / Drop', href: '/debug/dragDrop'},
@@ -239,7 +250,7 @@ module.exports = {
 					<i class="far fa-home"/>
 				</a>
 			</li>
-			<li v-for="node in $sitemap.selected.path" class="breadcrumb-item" :class="node == $sitemap.selected.node && 'active'">
+			<li v-for="node in $sitemap.selected.path" :key="node.href" class="breadcrumb-item" :class="node == $sitemap.selected.node && 'active'">
 				<span v-if="node.options" class="dropdown">
 					<a class="dropdown-toggle link" data-toggle="dropdown">{{node.title}}</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -345,52 +356,60 @@ module.exports = {
 </template>
 
 <style>
-#wrapper:not(.enlarged) .side-menu ul.list-unstyled {
+#wrapper:not(.enlarged) .left-side-menu ul.list-unstyled {
 	display: block !important;
 	overflow: hidden;
 	transition: max-height 0.3s ease-out;
 }
 
-#wrapper:not(.enlarged) .side-menu .closed ul.list-unstyled {
+#wrapper:not(.enlarged) .left-side-menu .closed ul.list-unstyled {
 	max-height: 0px;
 }
 
-#wrapper:not(.enlarged) .side-menu .opened ul.list-unstyled {
+#wrapper:not(.enlarged) .left-side-menu .opened ul.list-unstyled {
 	max-height: none;
 }
 
-.side-menu ul {
+.left-side-menu ul {
 	overflow-x: hidden !important;
 }
 
-.side-menu .menu-arrow {
+.left-side-menu .menu-arrow {
 	transition: transform 0.3s ease-out;
 }
 
-.side-menu .opened .menu-arrow {
+.left-side-menu .opened .menu-arrow {
 	transform: rotate(90deg);
 }
 
-.side-menu li > a {
+.left-side-menu li > a {
 	border: 0 !important;
 	white-space: nowrap;
 }
 
-.side-menu li.active > a {
+.left-side-menu li.active > a {
 	background: var(--main);
 }
 
-.side-menu li.active > a,
-.side-menu li.active > a > span,
-.side-menu li.active > a > i {
+.left-side-menu li.active > a,
+.left-side-menu li.active > a > span,
+.left-side-menu li.active > a > i {
 	color: var(--white) !important;
 }
 
-.side-menu li.opened .collapse {
+/* Override minton theme silly focus and hover rules */
+#wrapper.enlarged .left.left-side-menu #sidebar-menu > ul > li > a:focus {
+	color: var(--main) !important;
+}
+#wrapper.enlarged .left.left-side-menu #sidebar-menu > ul > li.active > a {
+  background: var(--main) !important;
+}
+
+.left-side-menu li.opened .collapse {
 	display: block !important;
 }
 
-.side-menu .collapse a.active {
+.left-side-menu .collapse a.active {
 	background: var(--main-highlight);
 }
 </style>

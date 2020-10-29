@@ -1,5 +1,5 @@
 /* Bootstrapping overlay {{{ */
-body.bootstrapping #app {
+body.bootstrapping #wrapper {
 	display: none;
 }
 
@@ -47,9 +47,17 @@ body.bootstrapping .splash.splash-init > img {
 }
 /* }}} */
 /* Loader bar styles {{{ */
-.loader-bar {
-	height: 5px !important;
-	z-index: 1 !important;
+
+/* Disable hiding of body */
+body.loading {
+	visibility: visible !important;
+	opacity: 1 !important;
+}
+
+/* Instead hide wrapper when foreground loading */
+body.loading-foreground.loading #wrapper {
+	visibility: hidden;
+	opacity: 0;
 }
 
 .loader-bar::before, .loader-bar::after {
