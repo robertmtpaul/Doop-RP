@@ -23,7 +23,7 @@ body.bootstrapping .splash.splash-init {
 }
 
 body.bootstrapping .splash.splash-init > img {
-	width: 50vw;
+	width: 10vw;
 	max-width: 700px;
 }
 /* }}} */
