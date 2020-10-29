@@ -97,7 +97,6 @@
     "pm2": "^4.4.0",
     "popper.js": "^1.16.1",
     "r-script": "0.0.4",
-    "raven": "^2.6.4",
     "run-sequence": "^2.2.1",
     "semver": "^7.3.2",
     "string-split-by": "^1.0.0",
