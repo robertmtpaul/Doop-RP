@@ -46,6 +46,7 @@ module.exports = function() {
 				{title: 'Session', href: '/debug/session'},
 				{title: 'Transitions', href: '/debug/transitions'},
 				{title: 'Toasts', href: '/debug/toast'},
+				{title: 'Users', href: '/debug/users'},
 				{title: 'Validate', href: '/debug/v-validate'},
 			],
 		},
@@ -326,6 +327,7 @@ module.exports = {
 
 <template name="sitemapMap">
 	<ul class="nav flex-column flex-nowrap flex-grow-1 flex-shrink-1 overflow-auto h-100">
+		<!-- Level 1 - Main sidebar items -->
 		<li class="nav-item" v-for="node in sitemapTree" :class="[node.opened ? 'opened' : 'closed', node.selected && 'active']">
 			<a @click="itemClick(node)" v-href="node.href" class="nav-link d-flex align-items-center flex-nowrap">
 				<i class="flex-grow-0 flex-shrink-0 mr-3" :class="node.icon"></i>
@@ -333,11 +335,21 @@ module.exports = {
 				<span v-if="node.children" class="menu-arrow flex-grow-0 flex-shrink-0 pl-2 ml-auto">
 				</span>
 			</a>
+
 			<ul class="collapse" v-if="node.children">
 				<li v-for="node in node.children">
 					<a @click="itemClick(node)" v-href="node.href" class="nav-link" :class="node.selected && 'active'">
 						{{node.title}}
 					</a>
+
+					<!-- Level 2 - Sub items -->
+					<ul class="collapse" v-if="node.children">
+						<li v-for="node in node.children">
+							<a @click="itemClick(node)" v-href="node.href" class="nav-link" :class="node.selected && 'active'">
+								{{node.title}}
+							</a>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</li>

@@ -857,7 +857,7 @@ html {
 }
 
 a {
-  color: var(--main);
+  color: var(--main-darker);
 }
 
 a:hover, a:active, a:focus {

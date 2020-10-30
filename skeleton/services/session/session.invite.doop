@@ -65,7 +65,6 @@ app.post('/api/session/invite', (req, res) => {
 });
 </endpoint>
 
-
 <endpoint>
 /**
 * Accept an email invite via token
@@ -78,12 +77,15 @@ app.get('/go/invite/accept/:token', (req, res) => {
 		_tokenPurpose: 'invite', // Restrict the token usage to users requesting logins only
 	})
 		.then(user => {
-			user.status = 'active';
-			return user.save();
+			console.log('Would accept token for user', user);
+			throw new Error('NOPE!');
 		})
-		.then(user => req.logIn(user).then(output => ({output, user})))
-		.then(({output, user}) => user.releaseToken().then(()=> output))
-		.then(output => res.redirect('/'))
+		.then(user => new Promise((resolve, reject) => req.logIn(user, err => {
+			if (err) return reject(err);
+			resolve();
+		})))
+		.then(()=> req.user.releaseToken())
+		.then(()=> res.redirect('/'))
 		.catch(()=> res.sendError(403, 'Login token invalid'))
 });
 </endpoint>

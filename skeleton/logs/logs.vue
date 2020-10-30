@@ -11,6 +11,25 @@ module.exports = {
 	data() { return {
 		postContent: '',
 		postMode: false,
+		postUpdateContent: '',
+		columns: [
+			{
+				id: 'created',
+				type: 'date',
+				title: 'Date',
+				sortable: true,
+			},
+			{
+				id: 'creator',
+				type: 'lookup',
+				title: 'Creator',
+			},
+			{
+				id: 'body',
+				type: 'text',
+				title: 'Change',
+			},
+		],
 	}},
 	methods: {
 		beginComment() {
@@ -31,6 +50,35 @@ module.exports = {
 				.catch(this.$toast.catch)
 				.finally(()=> this.$loader.stop())
 		},
+
+		updateComment(postId, ref) {
+			Promise.resolve()
+				.then(()=> this.$loader.startBackground())
+				.then(()=> this.$http.post(`/api/logs/${postId}`, {
+					body: this.postUpdateContent,
+				}))
+				.then(()=> this.postUpdateContent = '')
+				.then(()=> this.$refs[ref].hide())
+				.then(()=> this.$refs.logTable.refresh())
+				.catch(this.$toast.catch)
+				.finally(()=> this.$loader.stop())
+		},
+
+		deleteComment(postId) {
+			this.$prompt.confirm({
+				title: `Delete comment`,
+				body: 'Are you sure you wish to delete this comment?',
+			})
+				.then(()=> this.$loader.startBackground())
+				.then(()=> this.$http.delete(`/api/logs/${postId}`))
+				.then(()=> this.$refs.logTable.refresh())
+				.catch(this.$toast.catch)
+				.finally(()=> this.$loader.stop())
+		},
+
+		refresh(){
+			this.$refs.logTable.refresh();
+		}
 	},
 };
 </component>
@@ -44,24 +92,7 @@ module.exports = {
 			:sort-asc="false"
 			entity="logs"
 			:show-search="false"
-			:columns="[
-				{
-					id: 'created',
-					type: 'date',
-					title: 'Date',
-					sortable: true,
-				},
-				{
-					id: 'creator',
-					type: 'lookup',
-					title: 'Creator',
-				},
-				{
-					id: 'body',
-					type: 'text',
-					title: 'Change',
-				},
-			]"
+			:columns="columns"
 		>
 			<template #created="{row}">
 				<date :date="row.created"/>
@@ -78,7 +109,28 @@ module.exports = {
 				/>
 			</template>
 			<template #body="{row}">
-				<div v-html="row.body"/>
+				<div class="d-flex">
+					<div v-html="row.body" class="post-comment"/>
+					<v-popover
+						v-if="$session.data._id == row.creator || $session.hasPermission('ordersPaymentsCommentsEditAll')"
+						container="#modal-order-payments"
+						:ref="'updateArea-'+row._id">
+						<slot name="text">
+							<a class="btn btn-sm btn-link far fa-edit"></a>
+						</slot>
+						<div slot="popover" class="foobar">
+							<form class="form-horizontal px-3 py-2">
+								<slot name="popover-header"/>
+								<wysiwyg
+									:value="row.body"
+									@change="postUpdateContent = $event"
+								/>
+								<button type="button" @click="updateComment(row._id, `updateArea-${row._id}`)" class="w-100 mt-3 btn btn-success btn-sm">Update</button>
+							</form>
+						</div>
+					</v-popover>
+					<a v-if="$session.data._id == row.creator || $session.hasPermission('ordersPaymentsCommentsEditAll')" class="btn btn-sm btn-link btn-link-danger far fa-times" @click="deleteComment(row._id)"></a>
+				</div>
 			</template>
 		</v-table>
 		<div v-if="$props.comments" class="mt-2">
@@ -105,5 +157,17 @@ module.exports = {
 <style>
 .logs .ql-editor {
 	min-height: 100px;
+}
+
+.logs .post-comment p {
+	margin-bottom: 0;
+}
+
+.logs .post-comment a {
+	color: var(--primary);
+}
+
+.logs .post-comment a:hover {
+	text-decoration: underline;
 }
 </style>

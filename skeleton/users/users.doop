@@ -16,7 +16,7 @@ var Users = app.middleware.db.schema('users', {
 	settings: {
 	},
 	apiKeys: [{
-		key: {type: 'string'},
+		key: {type: 'string', index: {unqiue: true}},
 	}],
 	permissions: {
 		debug: {type: 'boolean', default: false},
@@ -71,7 +71,7 @@ Users.method('logIn', function(res) {
 			if (app.config.session.cookie.enabled) res.cookie(app.config.session.cookie.name, token, app.config.session.cookie);
 			if (app.config.session.authHeader.enabled) output = {auth: token}; // Send cookie as JSON return rather than though the traditional method (used to provide cross-domain access when testing a Cordova sandbox)
 
-			return app.cache.set(app.config.session.cache.prefix + token, {_id: user._id}).then(()=> output);
+			return app.cache.set(app.config.session.cache.prefix + token, {_id: user._id}, app.config.auth.expiry).then(()=> output);
 		})
 		// }}}
 });
@@ -163,7 +163,7 @@ app.use('/api/users/:id?', app.middleware.express.rest('users', {
 	data: req => req.user ? {user: req.user._id} : undefined,
 	get: [
 		(req, res, next) => {
-			req.query.select = '_id,username,name,email,emails,company,abn,billing,shipping,totalDiscount,minPayment'; // Force safe selection for Users
+			req.query.select = '_id,username,name,email,company,settings'; // Force safe selection for Users
 			if (req.user.permissions.usersEdit) req.query.select += ',permissions'; // Can also edit other users permissions
 			next();
 		},
@@ -171,8 +171,17 @@ app.use('/api/users/:id?', app.middleware.express.rest('users', {
 	],
 	query: 'get',
 	count: app.middleware.express.isUser(),
-	create: false,
-	save: app.middleware.express.hasPermission('usersEdit'),
+	create: app.middleware.express.hasPermission('usersEdit'),
+	save: (req, res, next) => {
+		if (
+			req.user.hasPermission('usersEdit') // User is an admin and can edit anyone
+			|| req.params.id == req.user._id // Allow the current user to edit their own profile
+		) {
+			next();
+		} else {
+			res.sendError('403: You are not an admin or editing your own profile');
+		}
+	},
 	meta: true,
 	delete: [
 		app.middleware.express.hasPermission('usersDelete'),

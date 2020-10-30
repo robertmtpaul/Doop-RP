@@ -29,6 +29,9 @@ module.exports = {
 				.catch(this.$toast.catch)
 				.finally(()=> this.$loader.stop())
 		},
+		validEmail(val){
+			return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)
+		},
 	},
 	created() {
 		return this.refresh();

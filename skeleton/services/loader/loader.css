@@ -24,7 +24,7 @@ body.bootstrapping .splash.splash-init {
 
 body.bootstrapping .splash.splash-init > img {
 	width: 50vw;
-	max-width: 700px;
+	max-width: 200px;
 }
 /* }}} */
 /* Error overlay {{{ */
@@ -81,5 +81,22 @@ body.loading-foreground .loader-spinner {
 	border-width: 4px;
 	border-bottom-color: transparent;
 	border-left-color: transparent;
+}
+/* }}} */
+/* Foreground loader spinner {{{ */
+.splash.splash-loading-foreground .splah-loading-foreground-spinner {
+	position: absolute;
+	display: block;
+	width: 16rem;
+	height: 16rem;
+	border-top: 3px solid var(--main);
+	border-right: 3px solid transparent;
+	border-radius: 50%;
+	animation: splah-loading-foreground-spinner-spin 2s linear infinite;
+}
+
+@keyframes splah-loading-foreground-spinner-spin {
+	from{transform: rotate(0deg)}
+	to{transform: rotate(360deg)}
 }
 /* }}} */

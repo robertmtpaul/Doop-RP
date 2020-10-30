@@ -240,7 +240,7 @@ module.exports = {
 		},
 	},
 	created() {
-		this.$debugging = true;
+		this.$debugging = false;
 		this.$watchAll(['url', 'limit', 'columns'], this.refresh, {immediate: true, deep: true});
 	},
 };
