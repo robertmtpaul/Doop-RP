@@ -8,6 +8,7 @@ app.middleware.db.schema('companies', {
 		user: {type: 'pointer', ref: 'users'}, // System recognised user OR...
 		email: {type: 'string'}, // Raw email string
 	}],
+	state: [{type: 'string', }]
 });
 </schema>
 
