@@ -3,7 +3,7 @@ module.exports = {
 	route: '/companies/create',
 	render: ()=> {},
 	data() {
-		company: {},
+		company: {}
 	},
 	methods: {
 		created() {
@@ -46,6 +46,7 @@ module.exports = {
 						</div>
 					</div>
 			</div>
+		
 		<div class="form-group row">
 			<label class="col-4 col-form-label">Contact emails</label>
 			<div class="col-8 col-form-label">
@@ -57,7 +58,14 @@ module.exports = {
 			</div>
 		</div>
 
+		<div class="form-group row">
+			<label class="col-4 col-form-label">State</label>
+			<div class="col-8 col-form-label">
+				<input type="text" v-model="company.state" class="form-control" autofocus/>
+			</div>
 		</div>
+
+
 
 	</form>
 </template>
