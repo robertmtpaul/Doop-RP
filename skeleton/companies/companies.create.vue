@@ -1,25 +1,23 @@
 <component name="companiesCreate">
+
 module.exports = {
 	route: '/companies/create',
-	render: ()=> {},
-	data() {
-		company: {}
-	},
+	data() { return {
+		company: {},
+	}},
 	methods: {
-		created() {
-			return Promise.resolve()
-				.then(()=> this.$loader.start())
-				.then(()=> this.$http.post('/api/companies'))
-				.then(res => this.$router.go(`/companies/${res.data._id}`))
-				.catch(this.$toast.catch)
-				.finally(()=> this.$loader.stop())
-		},
+		
 		save(notification = false, redirect = false) {
 			return Promise.resolve()
-				.then(()=> this.$loader.startBackground())
+				.then(()=> this.$loader.startBackground()) // 
+				// SAME AS:
+				//.then(()=> {
+				// 	return this.$loader.start()
+				// })
+				// ARROW FUNCTIONS CHANGE SCOPE
 				.then(()=> this.$http.post(`/api/companies/${this.$route.params.id}`, this.company))
-				.then()=> notification && this.$toast.success('Company edits saved'))
-				.then()=> redirect && this.$router.push('/companies'))
+				.then(()=> notification && this.$toast.success('Company edits saved'))
+				.then(()=> redirect && this.$router.push('/companies'))
 				.catch(this.$toast.catch)
 				.finally(()=> this.$loader.stop())
 		},
@@ -62,6 +60,9 @@ module.exports = {
 			<label class="col-4 col-form-label">State</label>
 			<div class="col-8 col-form-label">
 				<input type="text" v-model="company.state" class="form-control" autofocus/>
+				<v-select :option="['NSW', 'WA', 'QLD', 'TAS', 'ACT', 'SA', 'NT']"
+
+
 			</div>
 		</div>
 

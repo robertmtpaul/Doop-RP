@@ -8,7 +8,7 @@ app.middleware.db.schema('companies', {
 		user: {type: 'pointer', ref: 'users'}, // System recognised user OR...
 		email: {type: 'string'}, // Raw email string
 	}],
-	state: [{type: 'string', }]
+	state: {type: 'string', enum: ['NSW', 'QLD']}
 });
 </schema>
 
@@ -17,7 +17,7 @@ app.use('/api/companies/:id?', app.middleware.express.rest('companies', {
 	get: true,
 	query: true,
 	count: true,
-	create: app.middleware.express.hasPermission('companiesCreate'),
+	create: true,
 	save: app.middleware.express.hasPermission('companiesEdit'),
 	meta: true,
 	delete: false,
