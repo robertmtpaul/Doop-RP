@@ -31,9 +31,17 @@ module.exports = {
 </component>
 
 <template name="companiesEdit">
-	<form v-if="company" class="form-horizontal" @submit.prevent="save(true, false)">
+	<form
+		v-if="company"
+		class="form-horizontal"
+		@submit.prevent="save(true, false)"
+	>
 		<div class="btn-group-float">
-			<a @click="save(true, true)" class="btn btn-icon btn-lg btn-circle btn-success fa fa-check" v-tooltip="'Save company edits'"></a>
+			<a
+				@click="save(true, true)"
+				class="btn btn-icon btn-lg btn-circle btn-success fa fa-check"
+				v-tooltip="'Save company edits'"
+			></a>
 		</div>
 
 		<!-- Card: company information {{{ -->
@@ -43,7 +51,12 @@ module.exports = {
 				<div class="form-group row">
 					<label class="col-4 col-form-label">Name</label>
 					<div class="col-8 col-form-label">
-						<input type="text" v-model="company.name" class="form-control" autofocus/>
+						<input
+							type="text"
+							v-model="company.name"
+							class="form-control"
+							autofocus
+						/>
 					</div>
 				</div>
 				<div class="form-group row">
@@ -56,9 +69,26 @@ module.exports = {
 						/>
 					</div>
 				</div>
+				<div class="form-group row">
+					<label class="col-4 col-form-label">State</label>
+					<div class="col-8 col-form-label">
+						<v-select
+							v-model="company.state"
+							:options="[
+								'NSW',
+								'VIC',
+								'WA',
+								'QLD',
+								'TAS',
+								'ACT',
+								'SA',
+								'NT',
+							]"
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!-- }}} -->
-
 	</form>
 </template>

@@ -15,7 +15,7 @@ module.exports = {
 				// 	return this.$loader.start()
 				// })
 				// ARROW FUNCTIONS CHANGE SCOPE
-				.then(()=> this.$http.post(`/api/companies/${this.$route.params.id}`, this.company))
+				.then(()=> this.$http.post(`/api/companies/`, this.company))
 				.then(()=> notification && this.$toast.success('Company edits saved'))
 				.then(()=> redirect && this.$router.push('/companies'))
 				.catch(this.$toast.catch)
@@ -43,28 +43,24 @@ module.exports = {
 							<input type="text" v-model="company.name" class="form-control" autofocus/>
 						</div>
 					</div>
+					<div class="form-group row">
+						<label class="col-4 col-form-label">Contact emails</label>
+						<div class="col-8 col-form-label">
+							<emails
+								:selected="company.emails"
+								id-field="_id"
+								@change="$set(company, 'emails', $event)"
+							/>
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-4 col-form-label">State</label>
+						<div class="col-8 col-form-label">
+							<v-select v-model="company.state" :options="['NSW', 'VIC', 'WA', 'QLD', 'TAS', 'ACT', 'SA', 'NT']" />
+						</div>
+					</div>
+				</div>
 			</div>
-		
-		<div class="form-group row">
-			<label class="col-4 col-form-label">Contact emails</label>
-			<div class="col-8 col-form-label">
-				<emails
-					:selected="company.emails"
-					id-field="_id"
-					@change="$set(company, 'emails', $event)"
-				/>
-			</div>
-		</div>
-
-		<div class="form-group row">
-			<label class="col-4 col-form-label">State</label>
-			<div class="col-8 col-form-label">
-				<input type="text" v-model="company.state" class="form-control" autofocus/>
-				<v-select :option="['NSW', 'WA', 'QLD', 'TAS', 'ACT', 'SA', 'NT']"
-
-
-			</div>
-		</div>
 
 
 

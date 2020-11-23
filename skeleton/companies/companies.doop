@@ -8,12 +8,13 @@ app.middleware.db.schema('companies', {
 		user: {type: 'pointer', ref: 'users'}, // System recognised user OR...
 		email: {type: 'string'}, // Raw email string
 	}],
-	state: {type: 'string', enum: ['NSW', 'QLD']}
+	state: {type: 'string', enum: ['NSW', 'QLD', 'WA', 'TAS', 'NT', 'ACT', 'SA', 'VIC']}
 });
 </schema>
 
 <endpoint>
 app.use('/api/companies/:id?', app.middleware.express.rest('companies', {
+	// '12 bit error' reu has thrown something hand hasn';t recogised mongo ID
 	get: true,
 	query: true,
 	count: true,
